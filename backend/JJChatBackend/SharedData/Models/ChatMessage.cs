@@ -1,15 +1,16 @@
-﻿using System;
+﻿using SharedData.Interfaces;
+using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace JJChatAPI.Models
+namespace SharedData.Models
 {
-    public class ChatMessage
+    public class ChatMessage : IMessage
     {
         [Key]
         public long Id { get; set; }
 
         public DateTime Sent { get; set; }
-        public string Content { get; set; }
+        public string Message { get; set; }
 
         public bool Delivered { get; set; }
         

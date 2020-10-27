@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JJChatAPI.Models
+namespace SharedData.Models
 {
     public class User
     {

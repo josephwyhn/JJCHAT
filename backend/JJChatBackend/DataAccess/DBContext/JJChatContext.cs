@@ -1,11 +1,7 @@
-﻿using JJChatAPI.Models;
-using System;
-using System.Collections.Generic;
+﻿using SharedData.Models;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
-namespace JJChatAPI.DataAccess
+namespace DataAccess.DBContext
 {
     public class JJChatContext : DbContext
     {

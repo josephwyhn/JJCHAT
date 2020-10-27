@@ -1,4 +1,4 @@
-﻿using JJChatAPI.DataAccess;
+﻿using SharedData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +11,13 @@ namespace JJChatAPI.Controllers
     public class UserController : ApiController
     {
         // GET api/User
-        public bool Get(string username, string password)
+        public User Get(string username, string password)
         {
-            using (var db = new JJChatContext())
-            {
-                db.Users.Add(new Models.User() { Username = "Test", Password = "Test123" });
-                db.SaveChanges();
-            }
+            //using (var db = new JJChatContext())
+            //{
+            //    db.Users.Add(new User() { Username = "Test", Password = "Test123" });
+            //    db.SaveChanges();
+            //}
 
             if (username == "Jeremy" && password == "test")
                 return true;
