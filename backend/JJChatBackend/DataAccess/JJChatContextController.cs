@@ -40,17 +40,44 @@ namespace DataAccess
 
         public User Register(string username, string password)
         {
-            
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                throw new Exception("Benutzername oder Passwort waren leer!");
+
+            if (_userRepo.GetAll(x => x.Username == username).Any())
+                throw new Exception("Benutzername wird bereits verwendet");
+
+            var user = new User
+            {
+                Username = username,
+                Password = password
+            };
+
+            user = _userRepo.Insert(user);
+            _userRepo.Save();
+
+            return user;
         }
 
         public void Send(ChatMessage message)
         {
-            throw new NotImplementedException();
+            if (_chatMessageRepo.GetAll(x => x == message).Any())
+                throw new Exception("Nachricht wurde bereits verschickt!");
+
+            if (message.Receiver == null || message.Sender == null)
+                throw new Exception("Ungültiger Empfänger oder Versender!");
+
+            if (message.Sent == null) message.Sent = DateTime.Now;
+
+            _chatMessageRepo.Insert(message);
+            _chatMessageRepo.Save();
         }
 
         public IEnumerable<ChatMessage> Get(User user)
         {
-            throw new NotImplementedException();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            return _chatMessageRepo.GetAll(x => x.Receiver == user || x.Sender == user);
         }
 
 
@@ -70,7 +97,8 @@ namespace DataAccess
 
             if (isCalledByDispose)
             {
-
+                _dbContext.Dispose();
+                _dbContext = null;
             }
 
             _isDisposed = true;

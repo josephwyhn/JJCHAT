@@ -28,7 +28,7 @@ namespace DataAccess.EF
 
         public TEntity GetByID(long id) => _dbSet.Find(id);
 
-        public void Insert(TEntity entity) => _dbSet.Add(entity);
+        public TEntity Insert(TEntity entity) => _dbSet.Add(entity);
 
         public void Save() => _dbContext.SaveChanges();
 

@@ -10,7 +10,7 @@ namespace SharedData.Interfaces
 
         TEntity GetByID(long id);
 
-        void Insert(TEntity entity);
+        TEntity Insert(TEntity entity);
 
         void Delete(TEntity entity);
 
