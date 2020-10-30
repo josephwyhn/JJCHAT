@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.1022
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JJChatAPI", "JJChatAPI\JJChatAPI.csproj", "{A75504AB-1D39-4D09-BC7E-B020C18C3EA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{A8877598-3B88-4F75-92A5-1873744F47B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedData", "SharedData\SharedData.csproj", "{A1836F3E-E64B-4AAE-B768-0440FC0BB006}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{A75504AB-1D39-4D09-BC7E-B020C18C3EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A75504AB-1D39-4D09-BC7E-B020C18C3EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A75504AB-1D39-4D09-BC7E-B020C18C3EA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8877598-3B88-4F75-92A5-1873744F47B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8877598-3B88-4F75-92A5-1873744F47B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8877598-3B88-4F75-92A5-1873744F47B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8877598-3B88-4F75-92A5-1873744F47B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1836F3E-E64B-4AAE-B768-0440FC0BB006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1836F3E-E64B-4AAE-B768-0440FC0BB006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1836F3E-E64B-4AAE-B768-0440FC0BB006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1836F3E-E64B-4AAE-B768-0440FC0BB006}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
