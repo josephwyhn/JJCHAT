@@ -17,9 +17,9 @@ namespace JJChatAPI.Controllers
         }
 
         // GET api/User
-        public JSONUser Get(JSONUser jsonUser) => new JSONUser(_controllerInstance.Login(jsonUser.Username, jsonUser.Password));
+        public JSONUser Get(string username, string password) => new JSONUser(_controllerInstance.Login(username, password));
 
         // POST api/User
-        public JSONUser Post(JSONUser jsonUser) => new JSONUser(_controllerInstance.Register(jsonUser.Username, jsonUser.Password));
+        public JSONUser Post([FromBody]JSONUser jsonUser) => new JSONUser(_controllerInstance.Register(jsonUser?.username, jsonUser?.password));
     }
 }

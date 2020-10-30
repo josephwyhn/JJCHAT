@@ -62,12 +62,12 @@ namespace DataAccess
         {
             var message = new ChatMessage
             {
-                Id = jsonMessage.Id,
-                Delivered = jsonMessage.Delivered,
-                Sent = jsonMessage.Sent,
-                Message = jsonMessage.Message,
-                Sender = Login(jsonMessage.Sender.Username, jsonMessage.Sender.Password),
-                Receiver = Login(jsonMessage.Receiver.Username, jsonMessage.Receiver.Password)
+                Id = jsonMessage.id,
+                Delivered = jsonMessage.delivered,
+                Sent = jsonMessage.sent,
+                Message = jsonMessage.message,
+                Sender = Login(jsonMessage.sender.username, jsonMessage.sender.password),
+                Receiver = Login(jsonMessage.receiver.username, jsonMessage.receiver.password)
             };
 
             if (_chatMessageRepo.GetAll(x => x == message).Any())
@@ -87,7 +87,7 @@ namespace DataAccess
             if (jsonUser == null)
                 throw new ArgumentNullException("jsonUser");
 
-            var user = Login(jsonUser.Username, jsonUser.Password);
+            var user = Login(jsonUser.username, jsonUser.password);
 
             if (user == null)
                 throw new Exception("Ungültiger Benutzer! Nachrichten werden nicht abgerufen!");

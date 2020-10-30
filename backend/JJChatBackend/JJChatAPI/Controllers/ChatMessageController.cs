@@ -10,7 +10,7 @@ namespace JJChatAPI.Controllers
 {
     public class ChatMessageController : ApiController
     {
-        //ngrok http -host-header=localhost 8080
+        //ngrok http -host-header=localhost 51857
         private IJJChatController _controllerInstance;
 
         public ChatMessageController()
@@ -19,9 +19,9 @@ namespace JJChatAPI.Controllers
         }
 
         // GET api/ChatMessage
-        public JSONChatMessageList Get(JSONUser user) => new JSONChatMessageList(_controllerInstance.GetMessages(user));
+        public JSONChatMessageList Get(string username, string password) => new JSONChatMessageList(_controllerInstance.GetMessages(new JSONUser { username = username, password = password }));
 
         // POST api/ChatMessage
-        public void Post(JSONChatMessage message) => _controllerInstance.SendMessage(message);
+        public void Post([FromBody]JSONChatMessage message) => _controllerInstance.SendMessage(message);
     }
 }

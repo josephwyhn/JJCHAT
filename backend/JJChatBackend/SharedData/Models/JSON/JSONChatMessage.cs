@@ -4,14 +4,14 @@ namespace SharedData.Models.JSON
 {
     public class JSONChatMessage
     {
-        public long Id { get; set; }
+        public long id { get; set; }
 
-        public DateTime Sent { get; set; }
-        public string Message { get; set; }
+        public DateTime sent { get; set; }
+        public string message { get; set; }
 
-        public bool Delivered { get; set; }
+        public bool delivered { get; set; }
 
-        public JSONUser Sender { get; set; }
-        public JSONUser Receiver { get; set; }
+        public JSONUser sender { get; set; }
+        public JSONUser receiver { get; set; }
     }
 }

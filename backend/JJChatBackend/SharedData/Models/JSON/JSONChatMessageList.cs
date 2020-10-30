@@ -6,11 +6,11 @@ namespace SharedData.Models.JSON
 {
     public class JSONChatMessageList
     {
-        public List<JSONChatMessage> Messages { get; set; }
+        public List<JSONChatMessage> messages { get; set; }
 
         public JSONChatMessageList()
         {
-            Messages = new List<JSONChatMessage>();
+            messages = new List<JSONChatMessage>();
         }
 
         public JSONChatMessageList(IEnumerable<ChatMessage> messages)
@@ -18,14 +18,14 @@ namespace SharedData.Models.JSON
             if (messages == null)
                 throw new ArgumentNullException("messages");
 
-            Messages = messages.Select(x => new JSONChatMessage
+            this.messages = messages.Select(x => new JSONChatMessage
             {
-                Id = x.Id,
-                Delivered = x.Delivered,
-                Sent = x.Sent,
-                Message = x.Message,
-                Sender = new JSONUser(x.Sender),
-                Receiver = new JSONUser(x.Receiver)
+                id = x.Id,
+                delivered = x.Delivered,
+                sent = x.Sent,
+                message = x.Message,
+                sender = new JSONUser(x.Sender),
+                receiver = new JSONUser(x.Receiver)
             }).ToList();
         }
     }
