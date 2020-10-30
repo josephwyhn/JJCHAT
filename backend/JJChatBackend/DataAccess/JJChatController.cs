@@ -2,6 +2,7 @@
 using DataAccess.EF;
 using SharedData.Interfaces;
 using SharedData.Models;
+using SharedData.Models.JSON;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class JJChatContextController : IDisposable, IJJChatContextController
+    public class JJChatController : IJJChatController
     {
         private DbContext _dbContext;
 
         private IRepository<User> _userRepo;
         private IRepository<ChatMessage> _chatMessageRepo;
 
-        public JJChatContextController()
+        public JJChatController()
         {
             _dbContext = new JJChatContext();
 
@@ -33,9 +34,8 @@ namespace DataAccess
             {
                 throw new Exception("Doppelter Benutzer!");
             }
-            else if (!users.Any()) return null;
 
-            return users.First();
+            return users.FirstOrDefault();
         }
 
         public User Register(string username, string password)
@@ -58,8 +58,18 @@ namespace DataAccess
             return user;
         }
 
-        public void Send(ChatMessage message)
+        public void SendMessage(JSONChatMessage jsonMessage)
         {
+            var message = new ChatMessage
+            {
+                Id = jsonMessage.Id,
+                Delivered = jsonMessage.Delivered,
+                Sent = jsonMessage.Sent,
+                Message = jsonMessage.Message,
+                Sender = Login(jsonMessage.Sender.Username, jsonMessage.Sender.Password),
+                Receiver = Login(jsonMessage.Receiver.Username, jsonMessage.Receiver.Password)
+            };
+
             if (_chatMessageRepo.GetAll(x => x == message).Any())
                 throw new Exception("Nachricht wurde bereits verschickt!");
 
@@ -72,10 +82,15 @@ namespace DataAccess
             _chatMessageRepo.Save();
         }
 
-        public IEnumerable<ChatMessage> Get(User user)
+        public IEnumerable<ChatMessage> GetMessages(JSONUser jsonUser)
         {
+            if (jsonUser == null)
+                throw new ArgumentNullException("jsonUser");
+
+            var user = Login(jsonUser.Username, jsonUser.Password);
+
             if (user == null)
-                throw new ArgumentNullException("user");
+                throw new Exception("Ungültiger Benutzer! Nachrichten werden nicht abgerufen!");
 
             return _chatMessageRepo.GetAll(x => x.Receiver == user || x.Sender == user);
         }
@@ -103,7 +118,7 @@ namespace DataAccess
 
             _isDisposed = true;
         }
-        ~JJChatContextController()
+        ~JJChatController()
         {
             Dispose(false);
         }

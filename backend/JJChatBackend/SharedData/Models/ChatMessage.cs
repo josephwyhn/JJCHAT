@@ -11,10 +11,12 @@ namespace SharedData.Models
 
         public DateTime Sent { get; set; }
         public string Message { get; set; }
-
         public bool Delivered { get; set; }
         
-        public virtual User Sender { get; set; }
+        public long SenderId { get; set; }
+        public long ReceiverId { get; set; }
+        
+        public virtual User Sender { get; set; }        
         public virtual User Receiver { get; set; }
     }
 }

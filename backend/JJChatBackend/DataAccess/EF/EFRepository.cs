@@ -20,9 +20,15 @@ namespace DataAccess.EF
             _dbSet = _dbContext.Set<TEntity>();
         }
 
-        public void Delete(TEntity entity) => _dbSet.Remove(entity);
+        public void Delete(TEntity entity)
+        {
+            if (_dbContext.Entry(entity).State == EntityState.Detached)
+                _dbSet.Attach(entity);
 
-        public IEnumerable<TEntity> GetAll() => _dbSet.AsEnumerable();
+            _dbSet.Remove(entity);
+        }
+
+        public IEnumerable<TEntity> GetAll() => _dbSet;
 
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool> predicate) => _dbSet.Where(predicate);
 

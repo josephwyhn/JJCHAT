@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="DBContext\JJChatContext.cs" />
     <Compile Include="EF\EFRepository.cs" />
-    <Compile Include="JJChatContextController.cs" />
+    <Compile Include="JJChatController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

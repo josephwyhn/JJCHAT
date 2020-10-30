@@ -51,10 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IJJChatContextController.cs" />
+    <Compile Include="Interfaces\IJJChatController.cs" />
     <Compile Include="Interfaces\IMessage.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Models\ChatMessage.cs" />
+    <Compile Include="Models\JSON\JSONChatMessageList.cs" />
+    <Compile Include="Models\JSON\JSONChatMessage.cs" />
+    <Compile Include="Models\JSON\JSONUser.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

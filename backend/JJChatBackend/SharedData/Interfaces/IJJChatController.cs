@@ -1,18 +1,16 @@
 ﻿using SharedData.Models;
+using SharedData.Models.JSON;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharedData.Interfaces
 {
-    public interface IJJChatContextController
+    public interface IJJChatController : IDisposable
     {
         User Login(string username, string password);
         User Register(string username, string password);
 
-        void Send(ChatMessage message);
-        IEnumerable<ChatMessage> Get(User user);
+        void SendMessage(JSONChatMessage message);
+        IEnumerable<ChatMessage> GetMessages(JSONUser user);
     }
 }

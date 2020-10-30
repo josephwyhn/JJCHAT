@@ -1,40 +1,25 @@
-﻿using SharedData.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using DataAccess;
+using JJChatAPI.DataAccess;
+using SharedData.Interfaces;
+using SharedData.Models;
+using SharedData.Models.JSON;
 using System.Web.Http;
 
 namespace JJChatAPI.Controllers
 {
     public class UserController : ApiController
     {
-        // GET api/User
-        public User Get(string username, string password)
-        {
-            //using (var db = new JJChatContext())
-            //{
-            //    db.Users.Add(new User() { Username = "Test", Password = "Test123" });
-            //    db.SaveChanges();
-            //}
+        private IJJChatController _controllerInstance;
 
-            if (username == "Jeremy" && password == "test")
-                return true;
-            else
-                return false;
+        public UserController()
+        {
+            _controllerInstance = JJChatControllerInstanceManager.GetInstance();
         }
+
+        // GET api/User
+        public JSONUser Get(JSONUser jsonUser) => new JSONUser(_controllerInstance.Login(jsonUser.Username, jsonUser.Password));
 
         // POST api/User
-        public void Post(string username, string password)
-        {
-            throw new Exception("Test");
-        }
-
-        // DELETE api/User
-        public void Delete(string username, string password, long id)
-        {
-
-        }
+        public JSONUser Post(JSONUser jsonUser) => new JSONUser(_controllerInstance.Register(jsonUser.Username, jsonUser.Password));
     }
 }
