@@ -25,7 +25,7 @@ namespace DataAccess
 
             _userRepo = new EFRepository<User>(_dbContext);
             _chatMessageRepo = new EFRepository<ChatMessage>(_dbContext);
-        }
+        }        
 
         public User Login(string username, string password)
         {
@@ -58,6 +58,8 @@ namespace DataAccess
             return user;
         }
 
+        //TODO: In SendMessage darf Login nicht genutzt werden
+        //TODO: Add FriendController um Benutzer zu finden und mit ihnen zu chatten (username übergeben und die Id des Beutzers und Username zurückgeben) -> jsonMessage.Receiver und Sender darf nur ID sein -> Benutzer werden im Backend ermittelt
         public void SendMessage(JSONChatMessage jsonMessage)
         {
             var message = new ChatMessage
