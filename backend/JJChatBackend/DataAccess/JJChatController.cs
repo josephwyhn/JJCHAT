@@ -25,7 +25,7 @@ namespace DataAccess
 
             _userRepo = new EFRepository<User>(_dbContext);
             _chatMessageRepo = new EFRepository<ChatMessage>(_dbContext);
-        }        
+        }
 
         public User Login(string username, string password)
         {
