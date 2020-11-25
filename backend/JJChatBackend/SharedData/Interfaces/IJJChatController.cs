@@ -10,7 +10,9 @@ namespace SharedData.Interfaces
         User Login(string username, string password);
         User Register(string username, string password);
 
+        JSONUser GetFriend(string username);
+
         void SendMessage(JSONChatMessage message);
-        IEnumerable<ChatMessage> GetMessages(JSONUser user);
+        JSONChatMessageList GetMessages(JSONUser user);
     }
 }

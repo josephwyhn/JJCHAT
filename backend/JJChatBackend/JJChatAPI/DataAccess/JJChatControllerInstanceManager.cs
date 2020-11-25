@@ -15,7 +15,7 @@ namespace JJChatAPI.DataAccess
             return _controllerInstance;
         }
 
-        public static void DestroyInstance()
+        public static void RenewInstance()
         {
             if (_controllerInstance != null)
             {

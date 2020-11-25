@@ -11,7 +11,7 @@ namespace SharedData.Models.JSON
 
         public bool delivered { get; set; }
 
-        public JSONUser sender { get; set; }
-        public JSONUser receiver { get; set; }
+        public long sender { get; set; }
+        public long receiver { get; set; }
     }
 }
