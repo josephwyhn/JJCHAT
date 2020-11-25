@@ -6,26 +6,41 @@ namespace SharedData.Models.JSON
 {
     public class JSONChatMessageList
     {
-        public List<JSONChatMessage> messages { get; set; }
+        public List<JSONChatMessage> sentMessages { get; set; }
+        public List<JSONChatMessage> receivedMessages { get; set; }
 
         public JSONChatMessageList()
         {
-            messages = new List<JSONChatMessage>();
+            sentMessages = new List<JSONChatMessage>();
+            receivedMessages = new List<JSONChatMessage>();
         }
 
-        public JSONChatMessageList(IEnumerable<ChatMessage> messages)
+        public JSONChatMessageList(IEnumerable<ChatMessage> sentMessages, IEnumerable<ChatMessage> receivedMessages)
         {
-            if (messages == null)
-                throw new ArgumentNullException("messages");
+            if (sentMessages == null)
+                throw new ArgumentNullException("sentMessages");
 
-            this.messages = messages.Select(x => new JSONChatMessage
+            if (receivedMessages == null)
+                throw new ArgumentNullException("receivedMessages");
+
+            this.sentMessages = sentMessages.Select(x => new JSONChatMessage
             {
                 id = x.Id,
                 delivered = x.Delivered,
                 sent = x.Sent,
                 message = x.Message,
-                sender = new JSONUser(x.Sender),
-                receiver = new JSONUser(x.Receiver)
+                sender = x.SenderId,
+                receiver = x.ReceiverId
+            }).ToList();
+
+            this.receivedMessages = receivedMessages.Select(x => new JSONChatMessage
+            {
+                id = x.Id,
+                delivered = x.Delivered,
+                sent = x.Sent,
+                message = x.Message,
+                sender = x.SenderId,
+                receiver = x.ReceiverId
             }).ToList();
         }
     }

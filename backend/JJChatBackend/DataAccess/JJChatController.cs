@@ -29,22 +29,31 @@ namespace DataAccess
 
         public User Login(string username, string password)
         {
+            if (string.IsNullOrWhiteSpace(username))
+                throw new ArgumentNullException("username");
+
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentNullException("password");
+
             List<User> users = _userRepo.GetAll(x => x.Username == username && x.Password == password).ToList();
             if (users.Count > 1)
-            {
                 throw new Exception("Doppelter Benutzer!");
-            }
 
-            return users.FirstOrDefault();
+            var user = users.FirstOrDefault();
+
+            if (user == null)
+                throw new Exception("Benutzername oder Passwort ist falsch!");
+
+            return user;
         }
 
         public User Register(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-                throw new Exception("Benutzername oder Passwort waren leer!");
+                throw new Exception("Benutzername oder Passwort dürfen nicht leer sein!");
 
             if (_userRepo.GetAll(x => x.Username == username).Any())
-                throw new Exception("Benutzername wird bereits verwendet");
+                throw new Exception("Benutzername wird bereits verwendet!");
 
             var user = new User
             {
@@ -58,25 +67,47 @@ namespace DataAccess
             return user;
         }
 
-        //TODO: In SendMessage darf Login nicht genutzt werden
-        //TODO: Add FriendController um Benutzer zu finden und mit ihnen zu chatten (username übergeben und die Id des Beutzers und Username zurückgeben) -> jsonMessage.Receiver und Sender darf nur ID sein -> Benutzer werden im Backend ermittelt
+        public JSONUser GetFriend(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                throw new Exception("Benutzername des Freundes darf nicht leer sein!");
+
+            var friend = _userRepo.GetAll(x => x.Username == username).FirstOrDefault();
+
+            if (friend == null)
+                throw new Exception($"Freund mit dem Benutzernamen '{username}' wurde nicht gefunden (Benutzername ist Case-Sensitive)!");
+
+            return new JSONUser
+            {
+                id = friend.Id,
+                username = friend.Username,
+                password = null
+            };
+        }
+        
         public void SendMessage(JSONChatMessage jsonMessage)
         {
+            var msgSender = _userRepo.GetAll(x => x.Id == jsonMessage.sender).FirstOrDefault();
+            var msgReceiver = _userRepo.GetAll(x => x.Id == jsonMessage.receiver).FirstOrDefault();
+
+            if (msgSender == null)
+                throw new Exception($"ungültiger Versender: {jsonMessage.sender}!");
+
+            if (msgReceiver == null)
+                throw new Exception($"Ungültiger Empfänger: {jsonMessage.receiver}!");
+
+            if (msgSender == msgReceiver)
+                throw new Exception("Versender kann nicht Empfänger sein!");
+
             var message = new ChatMessage
             {
                 Id = jsonMessage.id,
                 Delivered = jsonMessage.delivered,
                 Sent = jsonMessage.sent,
                 Message = jsonMessage.message,
-                Sender = Login(jsonMessage.sender.username, jsonMessage.sender.password),
-                Receiver = Login(jsonMessage.receiver.username, jsonMessage.receiver.password)
+                Sender = msgSender,
+                Receiver = msgReceiver
             };
-
-            if (_chatMessageRepo.GetAll(x => x == message).Any())
-                throw new Exception("Nachricht wurde bereits verschickt!");
-
-            if (message.Receiver == null || message.Sender == null)
-                throw new Exception("Ungültiger Empfänger oder Versender!");
 
             if (message.Sent == null) message.Sent = DateTime.Now;
 
@@ -84,7 +115,7 @@ namespace DataAccess
             _chatMessageRepo.Save();
         }
 
-        public IEnumerable<ChatMessage> GetMessages(JSONUser jsonUser)
+        public JSONChatMessageList GetMessages(JSONUser jsonUser)
         {
             if (jsonUser == null)
                 throw new ArgumentNullException("jsonUser");
@@ -94,9 +125,8 @@ namespace DataAccess
             if (user == null)
                 throw new Exception("Ungültiger Benutzer! Nachrichten werden nicht abgerufen!");
 
-            return _chatMessageRepo.GetAll(x => x.Receiver == user || x.Sender == user);
+            return new JSONChatMessageList(user.SentMessages, user.ReceivedMessages);
         }
-
 
         #region Dispose
 
@@ -120,6 +150,7 @@ namespace DataAccess
 
             _isDisposed = true;
         }
+
         ~JJChatController()
         {
             Dispose(false);
