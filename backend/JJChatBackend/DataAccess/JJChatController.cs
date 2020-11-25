@@ -84,7 +84,7 @@ namespace DataAccess
                 password = null
             };
         }
-
+        
         public void SendMessage(JSONChatMessage jsonMessage)
         {
             var msgSender = _userRepo.GetAll(x => x.Id == jsonMessage.sender).FirstOrDefault();
