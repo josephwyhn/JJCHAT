@@ -1,6 +1,7 @@
 package com.example.jjchatapi;
 
 import com.example.jjchatapi.model.ChatMessage;
+import com.example.jjchatapi.model.ChatMessageList;
 import com.example.jjchatapi.model.User;
 
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class JJChatAPIController {
         return null;
     }
 
+    public User getFriend(String username) { return null; }
+
     public void sendMessage(ChatMessage message){
 
     }
 
-    public List<ChatMessage> getMessages(User user){
-        return new ArrayList<ChatMessage>();
+    public ChatMessageList getMessages(User user){
+        return new ChatMessageList();
     }
 }

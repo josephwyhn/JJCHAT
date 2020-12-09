@@ -5,27 +5,27 @@ public class User {
     private String _username;
     private String _password;
 
-    public void setId(long id){
+    public void setId(long id) {
         _id = id;
     }
 
-    public long getId(){
+    public long getId() {
         return _id;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         _username = username;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return _username;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         _password = password;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return _password;
     }
 }

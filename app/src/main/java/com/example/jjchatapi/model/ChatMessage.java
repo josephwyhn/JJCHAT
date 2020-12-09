@@ -1,58 +1,58 @@
 package com.example.jjchatapi.model;
 
 public class ChatMessage {
-    public long id;
-    public String sent;
-    public String message;
-    public boolean delivered;
-    public User sender;
-    public User receiver;
+    private long _id;
+    private String _sent;
+    private String _message;
+    private boolean _delivered;
+    private long _sender;
+    private long _receiver;
 
     public long getId() {
-        return id;
+        return _id;
     }
 
     public String getSent() {
-        return sent;
+        return _sent;
     }
 
     public String getMessage() {
-        return message;
+        return _message;
     }
 
     public boolean isDelivered() {
-        return delivered;
+        return _delivered;
     }
 
-    public User getSender() {
-        return sender;
+    public long getSender() {
+        return _sender;
     }
 
-    public User getReceiver() {
-        return receiver;
+    public long getReceiver() {
+        return _receiver;
     }
 
     public void setId(long id) {
-        this.id = id;
+        _id = id;
     }
 
     public void setSent(String sent) {
-        this.sent = sent;
+        _sent = sent;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        _message = message;
     }
 
     public void setDelivered(boolean delivered) {
-        this.delivered = delivered;
+        _delivered = delivered;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setSender(long sender) {
+        _sender = sender;
     }
 
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
+    public void setReceiver(long receiver) {
+        _receiver = receiver;
     }
 }
