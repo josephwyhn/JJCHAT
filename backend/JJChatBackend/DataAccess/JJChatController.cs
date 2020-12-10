@@ -1,5 +1,6 @@
 ﻿using DataAccess.DBContext;
 using DataAccess.EF;
+using SharedData.Exceptions;
 using SharedData.Interfaces;
 using SharedData.Models;
 using SharedData.Models.JSON;
@@ -30,10 +31,10 @@ namespace DataAccess
         public User Login(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username))
-                throw new ArgumentNullException("username");
+                throw new JJLowPrioException("Benutzername darf nicht leer sein!");
 
             if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentNullException("password");
+                throw new JJLowPrioException("Passwort darf nicht leer sein!");
 
             List<User> users = _userRepo.GetAll(x => x.Username == username && x.Password == password).ToList();
             if (users.Count > 1)
@@ -42,7 +43,7 @@ namespace DataAccess
             var user = users.FirstOrDefault();
 
             if (user == null)
-                throw new Exception("Benutzername oder Passwort ist falsch!");
+                throw new JJLowPrioException("Benutzername oder Passwort ist falsch!");
 
             return user;
         }
@@ -50,10 +51,10 @@ namespace DataAccess
         public User Register(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-                throw new Exception("Benutzername oder Passwort dürfen nicht leer sein!");
+                throw new JJLowPrioException("Benutzername oder Passwort dürfen nicht leer sein!");
 
             if (_userRepo.GetAll(x => x.Username == username).Any())
-                throw new Exception("Benutzername wird bereits verwendet!");
+                throw new JJLowPrioException("Benutzername wird bereits verwendet!");
 
             var user = new User
             {
@@ -70,12 +71,12 @@ namespace DataAccess
         public JSONUser GetFriend(string username)
         {
             if (string.IsNullOrWhiteSpace(username))
-                throw new Exception("Benutzername des Freundes darf nicht leer sein!");
+                throw new JJLowPrioException("Benutzername des Freundes darf nicht leer sein!");
 
             var friend = _userRepo.GetAll(x => x.Username == username).FirstOrDefault();
 
             if (friend == null)
-                throw new Exception($"Freund mit dem Benutzernamen '{username}' wurde nicht gefunden (Benutzername ist Case-Sensitive)!");
+                throw new JJLowPrioException($"Freund mit dem Benutzernamen '{username}' wurde nicht gefunden (Benutzername ist Case-Sensitive)!");
 
             return new JSONUser
             {
@@ -91,13 +92,13 @@ namespace DataAccess
             var msgReceiver = _userRepo.GetAll(x => x.Id == jsonMessage.receiver).FirstOrDefault();
 
             if (msgSender == null)
-                throw new Exception($"ungültiger Versender: {jsonMessage.sender}!");
+                throw new JJLowPrioException($"ungültiger Versender: {jsonMessage.sender}!");
 
             if (msgReceiver == null)
-                throw new Exception($"Ungültiger Empfänger: {jsonMessage.receiver}!");
+                throw new JJLowPrioException($"Ungültiger Empfänger: {jsonMessage.receiver}!");
 
             if (msgSender == msgReceiver)
-                throw new Exception("Versender kann nicht Empfänger sein!");
+                throw new JJLowPrioException("Versender kann nicht Empfänger sein!");
 
             var message = new ChatMessage
             {
@@ -118,12 +119,12 @@ namespace DataAccess
         public JSONChatMessageList GetMessages(JSONUser jsonUser)
         {
             if (jsonUser == null)
-                throw new ArgumentNullException("jsonUser");
+                throw new JJLowPrioException("JSON Objekt darf nicht leer sein!");
 
             var user = Login(jsonUser.username, jsonUser.password);
 
             if (user == null)
-                throw new Exception("Ungültiger Benutzer! Nachrichten werden nicht abgerufen!");
+                throw new JJLowPrioException("Ungültiger Benutzer! Nachrichten werden nicht abgerufen!");
 
             return new JSONChatMessageList(user.SentMessages, user.ReceivedMessages);
         }

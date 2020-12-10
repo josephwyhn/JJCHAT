@@ -1,6 +1,8 @@
-﻿using JJChatAPI.DataAccess;
+﻿using JJChatAPI.InstanceManager;
+using SharedData.Exceptions;
 using SharedData.Interfaces;
 using SharedData.Models.JSON;
+using System;
 using System.Web.Http;
 
 namespace JJChatAPI.Controllers
@@ -16,9 +18,50 @@ namespace JJChatAPI.Controllers
         }
 
         // GET api/Chat
-        public JSONChatMessageList Get(string username, string password) => _controllerInstance.GetMessages(new JSONUser { username = username, password = password });
+        public JSONResponse Get(string username, string password)
+        {
+            var response = new JSONResponse(false, null);
+
+            try
+            {
+                response.responseObject = _controllerInstance.GetMessages(new JSONUser { username = username, password = password });
+            }
+            catch (JJLowPrioException jjexc)
+            {
+                response.isException = true;
+                response.responseObject = new JSONJJLowPrioException(jjexc);
+            }
+            catch (Exception exc)
+            {
+                JJChatLoggerInstanceManager.GetInstance().Error("Fatal error occured in 'GET api/Chat'!", exc);
+                throw exc;
+            }
+
+            return response;
+        }
 
         // POST api/Chat
-        public void Post([FromBody] JSONChatMessage message) => _controllerInstance.SendMessage(message);
+        public JSONResponse Post([FromBody] JSONChatMessage message)
+        {
+            var response = new JSONResponse(false, null);
+
+            try
+            {
+                _controllerInstance.SendMessage(message);
+                response.responseObject = null;
+            }
+            catch (JJLowPrioException jjexc)
+            {
+                response.isException = true;
+                response.responseObject = new JSONJJLowPrioException(jjexc);
+            }
+            catch (Exception exc)
+            {
+                JJChatLoggerInstanceManager.GetInstance().Error("Fatal error occured in 'POST api/Chat'!", exc);
+                throw exc;
+            }
+
+            return response;
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using JJChatAPI.DataAccess;
+﻿using JJChatAPI.InstanceManager;
+using SharedData.Exceptions;
 using SharedData.Interfaces;
 using SharedData.Models.JSON;
+using System;
 using System.Web.Http;
 
 namespace JJChatAPI.Controllers
@@ -15,9 +17,49 @@ namespace JJChatAPI.Controllers
         }
 
         // GET api/User
-        public JSONUser Get(string username, string password) => new JSONUser(_controllerInstance.Login(username, password));
+        public JSONResponse Get(string username, string password)
+        {
+            var response = new JSONResponse(false, null);
+
+            try
+            {
+                response.responseObject = new JSONUser(_controllerInstance.Login(username, password));
+            }
+            catch (JJLowPrioException jjexc)
+            {
+                response.isException = true;
+                response.responseObject = new JSONJJLowPrioException(jjexc);
+            }
+            catch (Exception exc)
+            {
+                JJChatLoggerInstanceManager.GetInstance().Error("Fatal error occured in 'GET api/User'!", exc);
+                throw exc;
+            }
+
+            return response;
+        }
 
         // POST api/User
-        public JSONUser Post([FromBody]JSONUser jsonUser) => new JSONUser(_controllerInstance.Register(jsonUser?.username, jsonUser?.password));
+        public JSONResponse Post([FromBody]JSONUser jsonUser)
+        {
+            var response = new JSONResponse(false, null);
+
+            try
+            {
+                response.responseObject = new JSONUser(_controllerInstance.Register(jsonUser?.username, jsonUser?.password));
+            }
+            catch (JJLowPrioException jjexc)
+            {
+                response.isException = true;
+                response.responseObject = new JSONJJLowPrioException(jjexc);
+            }
+            catch (Exception exc)
+            {
+                JJChatLoggerInstanceManager.GetInstance().Error("Fatal error occured in 'POST api/User'!", exc);
+                throw exc;
+            }
+
+            return response;
+        }
     }
 }
