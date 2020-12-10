@@ -7,20 +7,28 @@ namespace JJChatAPI.DataAccess
     {
         private static IJJChatController _controllerInstance;
 
+        private static object padlock = new object();
+
         public static IJJChatController GetInstance()
         {
-            if (_controllerInstance == null)
-                _controllerInstance = NewInstance();
+            lock (padlock)
+            {
+                if (_controllerInstance == null)
+                    _controllerInstance = NewInstance();
 
-            return _controllerInstance;
+                return _controllerInstance;
+            }
         }
 
         public static void RenewInstance()
         {
-            if (_controllerInstance != null)
+            lock (padlock)
             {
-                _controllerInstance.Dispose();
-                _controllerInstance = NewInstance();
+                if (_controllerInstance != null)
+                {
+                    _controllerInstance.Dispose();
+                    _controllerInstance = NewInstance();
+                } 
             }
         }
 
