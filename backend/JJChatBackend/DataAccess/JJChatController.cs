@@ -86,7 +86,7 @@ namespace DataAccess
             };
         }
         
-        public void SendMessage(JSONChatMessage jsonMessage)
+        public JSONChatMessage SendMessage(JSONChatMessage jsonMessage)
         {
             var msgSender = _userRepo.GetAll(x => x.Id == jsonMessage.sender).FirstOrDefault();
             var msgReceiver = _userRepo.GetAll(x => x.Id == jsonMessage.receiver).FirstOrDefault();
@@ -109,11 +109,13 @@ namespace DataAccess
                 Sender = msgSender,
                 Receiver = msgReceiver
             };
+            
+            if (message.Sent == DateTime.MinValue) message.Sent = DateTime.Now;
 
-            if (message.Sent == null) message.Sent = DateTime.Now;
-
-            _chatMessageRepo.Insert(message);
+            message = _chatMessageRepo.Insert(message);
             _chatMessageRepo.Save();
+
+            return new JSONChatMessage(message);
         }
 
         public JSONChatMessageList GetMessages(JSONUser jsonUser)

@@ -47,8 +47,7 @@ namespace JJChatAPI.Controllers
 
             try
             {
-                _controllerInstance.SendMessage(message);
-                response.responseObject = null;
+                response.responseObject = _controllerInstance.SendMessage(message);
             }
             catch (JJLowPrioException jjexc)
             {
