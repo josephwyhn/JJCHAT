@@ -1,5 +1,7 @@
 package com.example.jjchatapi.model;
 
+import org.json.JSONObject;
+
 public class ChatMessage {
     private long _id;
     private String _sent;
@@ -7,6 +9,19 @@ public class ChatMessage {
     private boolean _delivered;
     private long _sender;
     private long _receiver;
+
+    public ChatMessage() {
+
+    }
+
+    public ChatMessage(JSONObject jsonChatMessage) throws Exception {
+        setId(jsonChatMessage.getLong("id"));
+        setSent(jsonChatMessage.getString("sent"));
+        setMessage(jsonChatMessage.getString("message"));
+        setDelivered(jsonChatMessage.getBoolean("delivered"));
+        setSender(jsonChatMessage.getLong("sender"));
+        setReceiver(jsonChatMessage.getLong("receiver"));
+    }
 
     public long getId() {
         return _id;

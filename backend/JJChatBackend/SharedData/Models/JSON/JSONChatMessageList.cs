@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SharedData.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,10 +18,10 @@ namespace SharedData.Models.JSON
         public JSONChatMessageList(IEnumerable<ChatMessage> sentMessages, IEnumerable<ChatMessage> receivedMessages)
         {
             if (sentMessages == null)
-                throw new ArgumentNullException("sentMessages");
+                throw new JJLowPrioException("Gesendete Nachrichten dürfen nicht null sein!");
 
             if (receivedMessages == null)
-                throw new ArgumentNullException("receivedMessages");
+                throw new JJLowPrioException("Empfange Nachrichten dürfen nicht null sein!");
 
             this.sentMessages = sentMessages.Select(x => new JSONChatMessage
             {

@@ -1,7 +1,6 @@
 ﻿using SharedData.Models;
 using SharedData.Models.JSON;
 using System;
-using System.Collections.Generic;
 
 namespace SharedData.Interfaces
 {
@@ -12,7 +11,7 @@ namespace SharedData.Interfaces
 
         JSONUser GetFriend(string username);
 
-        void SendMessage(JSONChatMessage message);
+        JSONChatMessage SendMessage(JSONChatMessage message);
         JSONChatMessageList GetMessages(JSONUser user);
     }
 }

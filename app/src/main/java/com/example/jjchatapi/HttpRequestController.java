@@ -1,20 +1,19 @@
 package com.example.jjchatapi;
 
-import com.example.jjchatapi.model.GenericResult;
+import com.example.jjchatapi.model.Response;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
 public class HttpRequestController {
 
-    private HttpsURLConnection _httpConnection;
+    private HttpURLConnection _httpConnection;
     private String _baseUrl;
 
     public HttpRequestController(String baseUrl) {
@@ -46,14 +45,13 @@ public class HttpRequestController {
     }
 
     private void openConnection(String apiDomain, Map<String, String> params) throws Exception {
-        _httpConnection = (HttpsURLConnection) getUrl(apiDomain, params).openConnection();
+        _httpConnection = null;
+        _httpConnection = (HttpURLConnection) getUrl(apiDomain, params).openConnection();
         _httpConnection.setConnectTimeout(15 * 1000);
     }
 
-    public GenericResult<Boolean, JSONObject> post(String apiDomain, JSONObject content) throws Exception {
+    public Response post(String apiDomain, JSONObject content) throws Exception {
         openConnection(apiDomain, null);
-
-        GenericResult<Boolean, JSONObject> result = new GenericResult<>();
 
         if (_httpConnection != null) {
             String jsonContentString = content.toString();
@@ -61,55 +59,55 @@ public class HttpRequestController {
 
             _httpConnection.setRequestMethod("POST");
             _httpConnection.setRequestProperty("Content-Type", "application/json");
-            _httpConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+            _httpConnection.setRequestProperty("Accept", "application/json");
             _httpConnection.setDoOutput(true);
 
             _httpConnection.getOutputStream().write(postDataBytes);
 
-            int responseCode = _httpConnection.getResponseCode();
+            handleResponseCode(_httpConnection.getResponseCode());
 
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(_httpConnection.getInputStream(), "UTF-8"));
-            StringBuilder responseBuilder = new StringBuilder();
+            StringBuffer responseBuffer = new StringBuffer();
             String inputLine;
             while ((inputLine = inputReader.readLine()) != null) {
-                responseBuilder.append(inputLine);
+                responseBuffer.append(inputLine);
             }
             inputReader.close();
 
-            result.setEntity1(responseCode == 500);
-            result.setEntity2(new JSONObject(responseBuilder.toString()));
+            return new Response(new JSONObject(responseBuffer.toString()));
         } else {
             throw new Exception("Verbindung konnte nicht erstellt werden!");
         }
-
-        return result;
     }
 
-    public GenericResult<Boolean, JSONObject> get(String apiDomain, Map<String, String> params) throws Exception {
+    public Response get(String apiDomain, Map<String, String> params) throws Exception {
         openConnection(apiDomain, params);
-
-        GenericResult<Boolean, JSONObject> result = new GenericResult<>();
 
         if (_httpConnection != null) {
             _httpConnection.setRequestMethod("GET");
-            _httpConnection.setRequestProperty("accept", "application/json");
+            _httpConnection.setRequestProperty("Accept", "application/json");
 
-            int responseCode = _httpConnection.getResponseCode();
+            handleResponseCode(_httpConnection.getResponseCode());
 
-            BufferedReader inputReader = new BufferedReader(new InputStreamReader(_httpConnection.getInputStream(), "UTF-8"));
-            StringBuilder responseBuilder = new StringBuilder();
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(_httpConnection.getInputStream()));
+            StringBuffer responseBuffer = new StringBuffer();
             String inputLine;
             while ((inputLine = inputReader.readLine()) != null) {
-                responseBuilder.append(inputLine);
+                responseBuffer.append(inputLine);
             }
             inputReader.close();
 
-            result.setEntity1(responseCode == 500);
-            result.setEntity2(new JSONObject(responseBuilder.toString()));
+            return new Response(new JSONObject(responseBuffer.toString()));
         } else {
             throw new Exception("Verbindung konnte nicht erstellt werden!");
         }
+    }
 
-        return result;
+    private void handleResponseCode(int code) throws Exception{
+        if (code == 500) {
+            throw new Exception("ResponseCode: 500 - Internal server error -> See server log files!");
+        } else if (code == 404) {
+            throw new Exception("ResponseCode: 404 - URL '" + _httpConnection.getURL().toString() + "' not found!");
+        }
     }
 }

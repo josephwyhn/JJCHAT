@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedData", "SharedData\SharedData.csproj", "{A1836F3E-E64B-4AAE-B768-0440FC0BB006}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JJChatLogging", "JJChatLogging\JJChatLogging.csproj", "{EFE1C726-6D52-42F4-B158-5BB7D175948D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A1836F3E-E64B-4AAE-B768-0440FC0BB006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1836F3E-E64B-4AAE-B768-0440FC0BB006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1836F3E-E64B-4AAE-B768-0440FC0BB006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFE1C726-6D52-42F4-B158-5BB7D175948D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFE1C726-6D52-42F4-B158-5BB7D175948D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFE1C726-6D52-42F4-B158-5BB7D175948D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFE1C726-6D52-42F4-B158-5BB7D175948D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

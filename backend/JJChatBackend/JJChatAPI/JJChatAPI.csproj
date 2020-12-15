@@ -144,10 +144,11 @@
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\FriendController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DataAccess\JJChatControllerInstanceManager.cs" />
+    <Compile Include="InstanceManager\JJChatControllerInstanceManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="InstanceManager\JJChatLoggerInstanceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +175,10 @@
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{a8877598-3b88-4f75-92a5-1873744f47b9}</Project>
       <Name>DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JJChatLogging\JJChatLogging.csproj">
+      <Project>{EFE1C726-6D52-42F4-B158-5BB7D175948D}</Project>
+      <Name>JJChatLogging</Name>
     </ProjectReference>
     <ProjectReference Include="..\SharedData\SharedData.csproj">
       <Project>{a1836f3e-e64b-4aae-b768-0440fc0bb006}</Project>

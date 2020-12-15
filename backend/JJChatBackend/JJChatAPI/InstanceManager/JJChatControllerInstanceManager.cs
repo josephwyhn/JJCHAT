@@ -1,7 +1,7 @@
 ﻿using DataAccess;
 using SharedData.Interfaces;
 
-namespace JJChatAPI.DataAccess
+namespace JJChatAPI.InstanceManager
 {
     public class JJChatControllerInstanceManager
     {
@@ -25,10 +25,9 @@ namespace JJChatAPI.DataAccess
             lock (padlock)
             {
                 if (_controllerInstance != null)
-                {
                     _controllerInstance.Dispose();
-                    _controllerInstance = NewInstance();
-                } 
+
+                _controllerInstance = NewInstance();
             }
         }
 
