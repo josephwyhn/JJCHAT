@@ -1,10 +1,10 @@
 package com.example.jjchatapi;
 
-import android.util.Log;
-
-import com.example.jjchatapi.model.CSharpException;
+import com.example.jjchatapi.model.ChatMessage;
 import com.example.jjchatapi.model.ChatMessageList;
 import com.example.jjchatapi.model.GenericResult;
+import com.example.jjchatapi.model.Response;
+import com.example.jjchatapi.model.ResponseMessage;
 import com.example.jjchatapi.model.User;
 
 import org.json.JSONObject;
@@ -41,17 +41,10 @@ public class JJChatAPIController {
         params.put("username", username);
         params.put("password", password);
 
-        GenericResult<Boolean, JSONObject> result = _requestController.get(USER_API_DOMAIN, params);
+        Response response = _requestController.get(USER_API_DOMAIN, params);
+        handleError(response);
 
-        JSONObject jsonResponse = result.getEntity2();
-
-        //Wenn Fehler von WebService
-        if (result.getEntity1()){
-            CSharpException exc = new CSharpException(jsonResponse);
-            throw new Exception(exc.getExceptionMessage());
-        }
-
-        return new User(jsonResponse);
+        return new User(response.getResponseObject());
     }
 
     public User register(String username, String password) throws Exception {
@@ -59,42 +52,49 @@ public class JJChatAPIController {
         jsonUser.put("username", username);
         jsonUser.put("password", password);
 
-        GenericResult<Boolean, JSONObject> result = _requestController.post(USER_API_DOMAIN, jsonUser);
+        Response response = _requestController.post(USER_API_DOMAIN, jsonUser);
+        handleError(response);
 
-        JSONObject jsonResponse = result.getEntity2();
-
-        //Wenn Fehler von WebService
-        if (result.getEntity1()){
-            CSharpException exc = new CSharpException(jsonResponse);
-            throw new Exception(exc.getExceptionMessage());
-        }
-
-        return new User(jsonResponse);
+        return new User(response.getResponseObject());
     }
 
     public User getFriend(String username) throws Exception {
         params.clear();
         params.put("username", username);
 
-        GenericResult<Boolean, JSONObject> result = _requestController.get(FRIEND_API_DOMAIN, params);
+        Response response = _requestController.get(FRIEND_API_DOMAIN, params);
+        handleError(response);
 
-        JSONObject jsonResponse = result.getEntity2();
+        return new User(response.getResponseObject());
+    }
 
-        //Wenn Fehler von WebService
-        if (result.getEntity1()){
-            CSharpException exc = new CSharpException(jsonResponse);
-            throw new Exception(exc.getExceptionMessage());
+    public ChatMessage sendMessage(long sender, long receiver, String message) throws Exception {
+        JSONObject jsonChatMessage = new JSONObject();
+        jsonChatMessage.put("message", message);
+        jsonChatMessage.put("sender", sender);
+        jsonChatMessage.put("receiver", receiver);
+
+        Response response = _requestController.post(CHAT_API_DOMAIN, jsonChatMessage);
+        handleError(response);
+
+        return new ChatMessage(response.getResponseObject());
+    }
+
+    public ChatMessageList getMessages(String username, String password) throws Exception {
+        params.clear();
+        params.put("username", username);
+        params.put("password", password);
+
+        Response response = _requestController.get(CHAT_API_DOMAIN, params);
+        handleError(response);
+
+        return new ChatMessageList(response.getResponseObject());
+    }
+
+    private void handleError(Response response) throws Exception {
+        if (response.isError()){
+            ResponseMessage msg = new ResponseMessage(response.getResponseObject());
+            throw new Exception(msg.getMessage());
         }
-
-        return new User(jsonResponse);
-    }
-
-    public void sendMessage(long receiver, String message) {
-        //TODO: implementieren
-    }
-
-    public ChatMessageList getMessages(User user) {
-        //TODO: implementieren
-        return new ChatMessageList();
     }
 }
