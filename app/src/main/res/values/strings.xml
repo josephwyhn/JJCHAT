@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JJCHAT</string>
+    <string name="Freund">Freund 1</string>
+    <string name="Nachricht">Nachricht 1</string>
 </resources>
