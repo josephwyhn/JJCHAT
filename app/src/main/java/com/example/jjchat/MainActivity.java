@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (usernameInput.isEmpty() || passwordInput.isEmpty()) {
             toastMessage("Bitte Passwort und Benutzername angeben!", Toast.LENGTH_SHORT);
         } else {
-            new DoLoginTask().execute(usernameInput, passwordInput);
+            //new DoLoginTask().execute(usernameInput, passwordInput);
+            Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+            startActivity(intent);
         }
     }
 
