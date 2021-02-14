@@ -23,10 +23,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnLogin;
     private Button btnRegister;
 
-    private TextView eAttemptInfo;
-
-    private int loginAttempts = 5;
-
     private JJChatAPIController _apiController;
 
     @Override
@@ -42,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
-
-        eAttemptInfo = findViewById(R.id.tvAttemptsInfo);
 
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
