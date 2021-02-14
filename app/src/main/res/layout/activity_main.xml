@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintVertical_bias="0.405" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -32,7 +32,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etUsername"
-        app:layout_constraintVertical_bias="0.156" />
+        app:layout_constraintVertical_bias="0.079" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -44,7 +44,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword"
-        app:layout_constraintVertical_bias="0.349" />
+        app:layout_constraintVertical_bias="0.268" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -55,16 +55,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword"
-        app:layout_constraintVertical_bias="0.505" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        app:layout_constraintVertical_bias="0.111" />
 
-    <TextView
-        android:id="@+id/tvAttemptsInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login Versuche verbleibend: 5"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.414"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/jjchatlogo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
