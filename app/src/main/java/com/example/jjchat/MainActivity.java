@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //TODO: Link dynamisch ermitteln
-        _apiController = new JJChatAPIController("https://2e90eeb28798.ngrok.io/api");
+        _apiController = new JJChatAPIController("https://b4fe93e46a77.ngrok.io/api");
 
         eBenutzername = findViewById(R.id.etUsername);
         ePasswort = findViewById(R.id.etPassword);
@@ -50,9 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (usernameInput.isEmpty() || passwordInput.isEmpty()) {
             toastMessage("Bitte Passwort und Benutzername angeben!", Toast.LENGTH_SHORT);
         } else {
-            //new DoLoginTask().execute(usernameInput, passwordInput);
-            Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
-            startActivity(intent);
+            new DoLoginTask().execute(usernameInput, passwordInput);
         }
     }
 
@@ -66,10 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new DoRegisterTask().execute(usernameInput, passwordInput);
         }
     }
-
-    //eAttemptInfo.setText("Login Versuche verbleibend: " + counter);
-    //                            Intent intent = new Intent(MainActivity.this, HomePageAcitivity.class);
-    //                            startActivity(intent);
 
     @Override
     public void onClick(View v) {
@@ -121,11 +115,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             User u = genericResult.getEntity1();
             Exception e = genericResult.getEntity2();
 
-            //TODO: Intent & SQLite saving
+            //TODO: SQLite saving
             if (e != null) {
                 toastMessage("Error: " + e.getMessage(), Toast.LENGTH_SHORT);
             } else if (u != null) {
-                toastMessage(u.getUsername() + " - " + u.getPassword(), Toast.LENGTH_LONG);
+                Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+                startActivity(intent);
             } else {
                 toastMessage("Unexpected result", Toast.LENGTH_SHORT);
             }
@@ -165,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (e != null) {
                 toastMessage("Error: " + e.getMessage(), Toast.LENGTH_SHORT);
             } else if (u != null) {
-                toastMessage(u.getUsername() + " - " + u.getPassword(), Toast.LENGTH_LONG);
+                toastMessage("Registrierung für " + u.getUsername() + " erfolgreich. Bitte einloggen!", Toast.LENGTH_LONG);
             } else {
                 toastMessage("Unexpected result", Toast.LENGTH_SHORT);
             }
